@@ -16,28 +16,30 @@
 
 from copy import copy
 
-from typing import List, Tuple, Dict, Union, Optional
-
-import numpy as np
-import tensorflow as tf
-import tensorflow_probability as tfp
+from typing import List, Dict, Union, Optional, Sequence
+from typing_extensions import Protocol
 
 from shapeguard import exception
 from shapeguard import parser
 
-Tensor = Union[np.ndarray, tf.Tensor]
+
+class ShapedTensor(Protocol):
+    shape: Sequence[int]
+
+    def reshape(self, shape: Sequence[int]) -> 'ShapedTensor':
+        pass
 
 
-def matches(tensor: Tensor, template: str, dims: Dict[str, int]) -> bool:
+def matches(tensor: ShapedTensor, template: str, dims: Dict[str, int]) -> bool:
     shape = get_shape(tensor)
     spec = parser.parse(template)
     return spec.matches(shape, dims)
 
 
-def reshape(tensor: Tensor, template: str, dims: Dict[str, int]) -> Tensor:
+def reshape(tensor: ShapedTensor, template: str, dims: Dict[str, int]) -> ShapedTensor:
     spec = parser.parse(template)
     new_shape = spec.evaluate(dims)
-    return tf.reshape(tensor, new_shape)
+    return tensor.reshape(new_shape)
 
 
 def evaluate(template: str, dims: Dict[str, int]) -> List[Optional[int]]:
@@ -45,7 +47,7 @@ def evaluate(template: str, dims: Dict[str, int]) -> List[Optional[int]]:
     return dim_spec.evaluate(dims)
 
 
-def guard(tensor: Tensor, template: str, dims: Dict[str, int]):
+def guard(tensor: ShapedTensor, template: str, dims: Dict[str, int]):
     shape = get_shape(tensor)
     spec = parser.parse(template)
     # compare rank
@@ -73,20 +75,11 @@ def guard(tensor: Tensor, template: str, dims: Dict[str, int]):
     return {k: v for k, v in inferred_dims.items() if not k.startswith("_")}
 
 
-def get_shape(tensor_or_shape: Union[Tensor, Tuple[int], List[int]]) -> List[int]:
+def get_shape(tensor_or_shape: Union[Sequence[int], ShapedTensor]) -> List[int]:
     if isinstance(tensor_or_shape, (list, tuple)):
         return list(tensor_or_shape)
-    elif isinstance(tensor_or_shape, tf.Tensor):
-        return tensor_or_shape.get_shape().as_list()
-    elif isinstance(tensor_or_shape, tf.TensorShape):
-        return tensor_or_shape.as_list()
-    elif isinstance(tensor_or_shape, np.ndarray):
+    elif hasattr(tensor_or_shape, 'shape') and hasattr(tensor_or_shape.shape, '__iter__'):
         return list(tensor_or_shape.shape)
-    elif isinstance(tensor_or_shape, tfp.distributions.Distribution):
-        return (
-            tensor_or_shape.batch_shape.as_list()
-            + tensor_or_shape.event_shape.as_list()
-        )
     else:
         raise TypeError(
             "Unknown tensor/shape {} of type: {}".format(

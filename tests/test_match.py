@@ -13,11 +13,14 @@
 # limitations under the License.
 
 import tensorflow as tf
-
+import torch
+import numpy as np
 from shapeguard.guard import ShapeGuard
 
+# ======== tensorflow =================
 
-def test_matches_basic_numerical():
+
+def test_matches_basic_numerical_tensorflow():
     sg = ShapeGuard()
     a = tf.ones([1, 2, 3])
     assert sg.matches(a, "1, 2, 3")
@@ -26,7 +29,7 @@ def test_matches_basic_numerical():
     assert not sg.matches(a, "1, 2")
 
 
-def test_matches_ignores_spaces():
+def test_matches_ignores_spaces_tensorflow():
     sg = ShapeGuard()
     a = tf.ones([1, 2, 3])
     assert sg.matches(a, "1,2,3")
@@ -34,7 +37,7 @@ def test_matches_ignores_spaces():
     assert sg.matches(a, "1,  2,3 ")
 
 
-def test_matches_named_dims():
+def test_matches_named_dims_tensorflow():
     sg = ShapeGuard(dims={"N": 24, "Z": 16})
     z = tf.ones([24, 16])
     assert sg.matches(z, "N, Z")
@@ -42,9 +45,80 @@ def test_matches_named_dims():
     assert not sg.matches(z, "N, N")
 
 
-def test_matches_wildcards():
+def test_matches_wildcards_tensorflow():
     sg = ShapeGuard()
     z = tf.ones([1, 2, 4, 8])
+    assert sg.matches(z, "1, 2, 4, *")
+    assert sg.matches(z, "*, *, *, 8")
+    assert not sg.matches(z, "*")
+    assert not sg.matches(z, "*, *, *")
+
+# ================= pytorch ==================
+
+def test_matches_basic_numerical_pytorch():
+    sg = ShapeGuard()
+    a = torch.ones([1, 2, 3])
+    assert sg.matches(a, "1, 2, 3")
+    assert not sg.matches(a, "1, 2, 4")
+    assert not sg.matches(a, "1, 2, 3, 4")
+    assert not sg.matches(a, "1, 2")
+
+
+def test_matches_ignores_spaces_pytorch():
+    sg = ShapeGuard()
+    a = torch.ones([1, 2, 3])
+    assert sg.matches(a, "1,2,3")
+    assert sg.matches(a, "1 ,  2, 3   ")
+    assert sg.matches(a, "1,  2,3 ")
+
+
+def test_matches_named_dims_pytorch():
+    sg = ShapeGuard(dims={"N": 24, "Z": 16})
+    z = torch.ones([24, 16])
+    assert sg.matches(z, "N, Z")
+    assert sg.matches(z, "24, Z")
+    assert not sg.matches(z, "N, N")
+
+
+def test_matches_wildcards_pytorch():
+    sg = ShapeGuard()
+    z = torch.ones([1, 2, 4, 8])
+    assert sg.matches(z, "1, 2, 4, *")
+    assert sg.matches(z, "*, *, *, 8")
+    assert not sg.matches(z, "*")
+    assert not sg.matches(z, "*, *, *")
+
+
+# ================== numpy ===================
+
+def test_matches_basic_numerical_numpy():
+    sg = ShapeGuard()
+    a = np.ones([1, 2, 3])
+    assert sg.matches(a, "1, 2, 3")
+    assert not sg.matches(a, "1, 2, 4")
+    assert not sg.matches(a, "1, 2, 3, 4")
+    assert not sg.matches(a, "1, 2")
+
+
+def test_matches_ignores_spaces_numpy():
+    sg = ShapeGuard()
+    a = np.ones([1, 2, 3])
+    assert sg.matches(a, "1,2,3")
+    assert sg.matches(a, "1 ,  2, 3   ")
+    assert sg.matches(a, "1,  2,3 ")
+
+
+def test_matches_named_dims_numpy():
+    sg = ShapeGuard(dims={"N": 24, "Z": 16})
+    z = np.ones([24, 16])
+    assert sg.matches(z, "N, Z")
+    assert sg.matches(z, "24, Z")
+    assert not sg.matches(z, "N, N")
+
+
+def test_matches_wildcards_numpy():
+    sg = ShapeGuard()
+    z = np.ones([1, 2, 4, 8])
     assert sg.matches(z, "1, 2, 4, *")
     assert sg.matches(z, "*, *, *, 8")
     assert not sg.matches(z, "*")
