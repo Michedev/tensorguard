@@ -8,7 +8,7 @@ setup(
     name='tensorguard',
     version='0.1.0',
     packages=['tests', 'shapeguard'],
-    url='https://github.com/Michedev/shapeguard',
+    url='https://github.com/Michedev/tensorguard',
     license='Apache-2.0',
     author='mikedev',
     author_email='mik3dev@gmail.com',
