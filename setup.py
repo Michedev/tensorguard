@@ -17,5 +17,7 @@ setup(
     author_email='mik3dev@gmail.com',
     description='TensorGuard helps to guard against bad Tensor Shapes',
     test_require=test_requirements,
-    install_requires=install_requirements
+    install_requires=install_requirements,
+    long_description="TensorGuard helps to guard against bad Tensor shapes in any tensor based library "
+                     "(e.g. Numpy, Pytorch, Tensorflow) using an intuitive symbolic-based syntax"
 )
