@@ -12,7 +12,7 @@
 
 """This python module contains ShapeGuard."""
 from copy import copy
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Union, Dict
 
 from shapeguard import tools
 from shapeguard.exception import ShapeError
@@ -25,6 +25,8 @@ __author_email__ = "mik3dev@gmail.com"
 
 __url__ = "https://github.com/Michedev/shapeguard"
 
+from shapeguard.tools import ShapedTensor
+
 __sg = ShapeGuard()
 
 
@@ -36,20 +38,20 @@ def reset():
     __sg = ShapeGuard()
 
 
-def matches(tensor, template: str) -> bool:
+def matches(tensor: Union[ShapedTensor, List[int]], template: str) -> bool:
     """
     Return True if tensor shape matches template
     """
     return tools.matches(tensor, template, __sg.dims)
 
 
-def guard(tensor, template: str):
+def guard(tensor: Union[ShapedTensor, List[int]], template: str):
     inferred_dims = tools.guard(tensor, template, __sg.dims)
     __sg.dims.update(inferred_dims)
     return tensor
 
 
-def reshape(tensor, template: str):
+def reshape(tensor: Union[ShapedTensor, List[int]], template: str):
     return tools.reshape(tensor, template, __sg.dims)
 
 
@@ -59,7 +61,7 @@ def evaluate(template: str, **kwargs) -> List[Optional[int]]:
     return tools.evaluate(template, local_dims)
 
 
-def get_dims(item: Optional[str] = None) -> List[Optional[int]]:
+def get_dims(item: Optional[str] = None) -> Union[Dict[str, int], List[Optional[int]]]:
     if item is None:
         return __sg.dims
     else:
@@ -99,5 +101,5 @@ __all__ = (
     "evaluate",
     "get_dim",
     "del_dim",
-    "dims"
+    "get_dims"
 )
