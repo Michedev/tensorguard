@@ -10,7 +10,7 @@ ShapeGuard is a tool to help with handling shapes in Tensorflow.
 import numpy as np  # could be tensorflow or torch as well
 import tensorguard as tg
 
-# tg = ShapeGuard()  #could be done in a OOP fashion
+# tensorguard = tg.TensorGuard()  #could be done in a OOP fashion
 img = np.ones([64, 32, 32, 3])
 flat_img = np.ones([64, 1024])
 labels = np.ones([64])
