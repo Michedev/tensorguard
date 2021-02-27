@@ -1,6 +1,6 @@
-# Shape Guard
+# Tensor Guard
 
-ShapeGuard is a tool to help with handling shapes in Tensorflow.
+TensorGuard is a tool to help with handling shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow).
 
 
 
