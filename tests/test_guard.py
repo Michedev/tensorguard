@@ -21,6 +21,7 @@ from shapeguard import ShapeError
 from shapeguard import ShapeGuard
 
 
+
 def test_guard_raises_tensorflow():
     sg = ShapeGuard()
     a = tf.ones([1, 2, 3])
@@ -194,6 +195,8 @@ def test_guard_ellipsis_infer_dims_pytorch():
     sg.guard(a, "A, B, ..., C")
     assert sg.dims == {"A": 1, "B": 2, "C": 5}
 
+
+
 # ================= numpy =======================
 
 
@@ -281,3 +284,90 @@ def test_guard_ellipsis_infer_dims_numpy():
     a = np.ones([1, 2, 3, 4, 5])
     sg.guard(a, "A, B, ..., C")
     assert sg.dims == {"A": 1, "B": 2, "C": 5}
+
+# ========================= global =======================
+
+def test_guard_raises_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    with pytest.raises(ShapeError):
+        sg.guard(a, "3, 2, 1")
+
+
+def test_guard_infers_dimensions_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    sg.guard(a, "A, B, C")
+    assert sg.get_dims() == {"A": 1, "B": 2, "C": 3}
+
+
+def test_guard_infers_dimensions_complex_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    sg.guard(a, "A, B*2, A+C")
+    assert sg.get_dims() == {"A": 1, "B": 1, "C": 2}, f'{sg.get_dims()}' + ' != {"A": 1, "B": 1, "C": 2}'
+
+
+def test_guard_infers_dimensions_operator_priority_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 8])
+    sg.guard(a, "A, B, A+C*2+1")
+    assert sg.get_dims() == {"A": 1, "B": 2, "C": 3}
+
+
+def test_guard_raises_complex_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    with pytest.raises(ShapeError):
+        sg.guard(a, "A, B, B")
+
+
+def test_guard_raises_inferred_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    b = np.ones([3, 2, 5])
+    sg.guard(a, "A, B, C")
+    with pytest.raises(ShapeError):
+        sg.guard(b, "C, B, A")
+
+
+def test_guard_ignores_wildcard_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    sg.guard(a, "*, *, 3")
+    assert sg.get_dims() == {}
+
+
+def test_guard_dynamic_shape_global():
+    import shapeguard as sg; sg.reset()
+    with pytest.raises(ShapeError):
+        sg.guard([None, 2, 3], "C, B, A")
+
+    sg.guard([None, 2, 3], "?, B, A")
+    sg.guard([1, 2, 3], "C?, B, A")
+    sg.guard([None, 2, 3], "C?, B, A")
+
+
+def test_guard_ellipsis_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3, 4, 5])
+    sg.guard(a, "...")
+    sg.guard(a, "..., 5")
+    sg.guard(a, "..., 4, 5")
+    sg.guard(a, "1, ...")
+    sg.guard(a, "1, 2, ...")
+    sg.guard(a, "1, 2, ..., 4, 5")
+    sg.guard(a, "1, 2, 3, ..., 4, 5")
+
+    with pytest.raises(ShapeError):
+        sg.guard(a, "1, 2, 3, 4, 5, 6,...")
+
+    with pytest.raises(ShapeError):
+        sg.guard(a, "..., 1, 2, 3, 4, 5, 6")
+
+
+def test_guard_ellipsis_infer_dims_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3, 4, 5])
+    sg.guard(a, "A, B, ..., C")
+    assert sg.get_dims() == {"A": 1, "B": 2, "C": 5}

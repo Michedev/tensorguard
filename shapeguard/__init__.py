@@ -1,5 +1,3 @@
-# Copyright 2018 Google LLC
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,21 +11,80 @@
 # limitations under the License.
 
 """This python module contains ShapeGuard."""
+from copy import copy
+from typing import Optional, List, Any
 
+from shapeguard import tools
 from shapeguard.exception import ShapeError
 from shapeguard.guard import ShapeGuard
-from shapeguard.tools import matches
-from shapeguard.tools import evaluate
-from shapeguard.tools import reshape
-from shapeguard.tools import get_shape
-
 
 __version__ = "0.1.0"
 
-__author__ = "Klaus Greff"
-__author_email__ = "klaus.greff@startmail.com"
+__author__ = "Michele De Vita"
+__author_email__ = "mik3dev@gmail.com"
 
-__url__ = "https://github.com/Qwlouse/shapeguard"
+__url__ = "https://github.com/Michedev/shapeguard"
+
+__sg = ShapeGuard()
+
+
+def reset():
+    """
+    Reset global shapeguard
+    """
+    global __sg
+    __sg = ShapeGuard()
+
+
+def matches(tensor, template: str) -> bool:
+    """
+    Return True if tensor shape matches template
+    """
+    return tools.matches(tensor, template, __sg.dims)
+
+
+def guard(tensor, template: str):
+    inferred_dims = tools.guard(tensor, template, __sg.dims)
+    __sg.dims.update(inferred_dims)
+    return tensor
+
+
+def reshape(tensor, template: str):
+    return tools.reshape(tensor, template, __sg.dims)
+
+
+def evaluate(template: str, **kwargs) -> List[Optional[int]]:
+    local_dims = copy(__sg.dims)
+    local_dims.update(kwargs)
+    return tools.evaluate(template, local_dims)
+
+
+def get_dims(item: Optional[str] = None) -> List[Optional[int]]:
+    if item is None:
+        return __sg.dims
+    else:
+        return tools.evaluate(item, __sg.dims)
+
+
+def get_dim(item: str) -> Any:
+    try:
+        return __sg.dims[item]
+    except KeyError:
+        raise AttributeError(item)
+
+
+def set_dim(key: str, value: Any):
+    try:
+        __sg.dims[key] = value
+    except KeyError:
+        raise AttributeError(key)
+
+
+def del_dim(item: str):
+    try:
+        del __sg.dims[item]
+    except KeyError:
+        raise AttributeError(item)
 
 
 __all__ = (
@@ -35,10 +92,12 @@ __all__ = (
     "__version__",
     "__author__",
     "__author_email__",
-    "matches",
-    "evaluate",
-    "guard",
-    "reshape",
-    "get_shape",
     "ShapeError",
+    "guard",
+    "matches",
+    "reshape",
+    "evaluate",
+    "get_dim",
+    "del_dim",
+    "dims"
 )

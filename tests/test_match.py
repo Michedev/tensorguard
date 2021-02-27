@@ -123,3 +123,39 @@ def test_matches_wildcards_numpy():
     assert sg.matches(z, "*, *, *, 8")
     assert not sg.matches(z, "*")
     assert not sg.matches(z, "*, *, *")
+
+
+# ================ global =====================
+
+def test_matches_basic_numerical_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    assert sg.matches(a, "1, 2, 3")
+    assert not sg.matches(a, "1, 2, 4")
+    assert not sg.matches(a, "1, 2, 3, 4")
+    assert not sg.matches(a, "1, 2")
+
+
+def test_matches_ignores_spaces_global():
+    import shapeguard as sg; sg.reset()
+    a = np.ones([1, 2, 3])
+    assert sg.matches(a, "1,2,3")
+    assert sg.matches(a, "1 ,  2, 3   ")
+    assert sg.matches(a, "1,  2,3 ")
+
+
+def test_matches_named_dims_global():
+    sg = ShapeGuard(dims={"N": 24, "Z": 16})
+    z = np.ones([24, 16])
+    assert sg.matches(z, "N, Z")
+    assert sg.matches(z, "24, Z")
+    assert not sg.matches(z, "N, N")
+
+
+def test_matches_wildcards_global():
+    import shapeguard as sg; sg.reset()
+    z = np.ones([1, 2, 4, 8])
+    assert sg.matches(z, "1, 2, 4, *")
+    assert sg.matches(z, "*, *, *, 8")
+    assert not sg.matches(z, "*")
+    assert not sg.matches(z, "*, *, *")

@@ -7,11 +7,9 @@ ShapeGuard is a tool to help with handling shapes in Tensorflow.
 ## Basic Usage
 ```python
 import tensorflow as tf
-from shapeguard import ShapeGuard
+import shapeguard as sg
 
-sg = ShapeGuard()
-
-img = tf.ones([64, 32, 32, 3])
+img = tf.ones([64, 32, 32, 3])  # can be numpy or torch as well
 flat_img = tf.ones([64, 1024])
 labels = tf.ones([64])
 
@@ -27,7 +25,7 @@ mean_img = sg.guard(tf.reduce_mean(img, axis=0), "H, W, C")
 flat_img = sg.reshape(img, 'B, H*W*C')
 
 # evaluate templates
-assert sg['H, W*C+1'] == [32, 97]
+assert sg.get_dims('H, W*C+1') == [32, 97]
 
 # attribute access to inferred dimensions
 assert sg.B == 64
@@ -44,9 +42,4 @@ The shape template mini-DSL supports many different ways of specifying shapes:
   * addition, subtraction, multiplication, division: `"B*N, W/2, H*(C+1)"`
   * dynamic dimensions: `"?, H, W, C"`  *(only matches `[None, H, W, C]`)*
 
----
-**DISCLAIMER**
-
-This is not an officially supported Google product.
-
----
+### Original Repo link: https://github.com/Qwlouse/shapeguard
