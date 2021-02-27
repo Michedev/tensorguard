@@ -1,5 +1,3 @@
-# Copyright 2018 Google LLC
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,9 +15,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from shapeguard import dim_specs
-from shapeguard import shape_spec
-from shapeguard import shape_spec_parser
+from tensorguard import dim_specs
+from tensorguard import shape_spec
+from tensorguard import shape_spec_parser
 
 
 class TreeToSpec(shape_spec_parser.Transformer):

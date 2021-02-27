@@ -1,5 +1,3 @@
-# Copyright 2018 Google LLC
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,9 +14,9 @@
 
 from typing import List, Union, Dict, Optional, Tuple
 
-from shapeguard import dim_specs
-from shapeguard import exception
-from shapeguard import shape_spec_parser
+from tensorguard import dim_specs
+from tensorguard import exception
+from tensorguard import shape_spec_parser
 
 EntriesType = List[Union[shape_spec_parser.Token, dim_specs.DimSpec]]
 ShapeType = Union[Tuple[int], List[int]]

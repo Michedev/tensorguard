@@ -5,29 +5,29 @@ ShapeGuard is a tool to help with handling shapes in Tensorflow.
 
 
 ## Basic Usage
+
 ```python
-import numpy as np # could be tensorflow or torch as well
-import shapeguard as sg
+import numpy as np  # could be tensorflow or torch as well
+import tensorguard as tg
 
-
-#sg = ShapeGuard()  #could be done in a OOP fashion
-img = np.ones([64, 32, 32, 3])  
+# tg = ShapeGuard()  #could be done in a OOP fashion
+img = np.ones([64, 32, 32, 3])
 flat_img = np.ones([64, 1024])
 labels = np.ones([64])
 
 # check shape consistency
-sg.guard(img, "B, H, W, C")
-sg.guard(labels, "B, 1")  # raises error because of rank mismatch
-sg.guard(flat_img, "B, H*W*C")  # raises error because 1024 != 32*32*3
+tg.guard(img, "B, H, W, C")
+tg.guard(labels, "B, 1")  # raises error because of rank mismatch
+tg.guard(flat_img, "B, H*W*C")  # raises error because 1024 != 32*32*3
 
 # guard also returns the tensor, so it can be inlined
-mean_img = sg.guard(np.mean(img, axis=0), "H, W, C")
+mean_img = tg.guard(np.mean(img, axis=0), "H, W, C")
 
 # more readable reshapes
-flat_img = sg.reshape(img, 'B, H*W*C')
+flat_img = tg.reshape(img, 'B, H*W*C')
 
 # evaluate templates
-assert sg.get_dims('H, W*C+1') == [32, 97]
+assert tg.get_dims('H, W*C+1') == [32, 97]
 
 ```
 

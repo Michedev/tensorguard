@@ -1,5 +1,3 @@
-# Copyright 2018 Google LLC
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,10 +15,10 @@
 from copy import copy
 from typing import Optional, Dict, Any, List
 
-from shapeguard import tools
+from tensorguard import tools
 
 
-class ShapeGuard:
+class TensorGuard:
     def __init__(self, dims: Optional[Dict[str, int]] = None):
         object.__setattr__(self, "dims", {} if dims is None else dims)
 

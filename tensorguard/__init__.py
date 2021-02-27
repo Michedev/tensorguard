@@ -14,9 +14,9 @@
 from copy import copy
 from typing import Optional, List, Any, Union, Dict
 
-from shapeguard import tools
-from shapeguard.exception import ShapeError
-from shapeguard.guard import ShapeGuard
+from tensorguard import tools
+from tensorguard.exception import ShapeError
+from tensorguard.guard import TensorGuard
 
 __version__ = "0.1.0"
 
@@ -25,72 +25,72 @@ __author_email__ = "mik3dev@gmail.com"
 
 __url__ = "https://github.com/Michedev/shapeguard"
 
-from shapeguard.tools import ShapedTensor
+from tensorguard.tools import ShapedTensor
 
-__sg = ShapeGuard()
+__tg = TensorGuard()
 
 
 def reset():
     """
-    Reset global shapeguard
+    Reset global tensorguard
     """
-    global __sg
-    __sg = ShapeGuard()
+    global __tg
+    __tg = TensorGuard()
 
 
 def matches(tensor: Union[ShapedTensor, List[int]], template: str) -> bool:
     """
     Return True if tensor shape matches template
     """
-    return tools.matches(tensor, template, __sg.dims)
+    return tools.matches(tensor, template, __tg.dims)
 
 
 def guard(tensor: Union[ShapedTensor, List[int]], template: str):
-    inferred_dims = tools.guard(tensor, template, __sg.dims)
-    __sg.dims.update(inferred_dims)
+    inferred_dims = tools.guard(tensor, template, __tg.dims)
+    __tg.dims.update(inferred_dims)
     return tensor
 
 
 def reshape(tensor: Union[ShapedTensor, List[int]], template: str):
-    return tools.reshape(tensor, template, __sg.dims)
+    return tools.reshape(tensor, template, __tg.dims)
 
 
 def evaluate(template: str, **kwargs) -> List[Optional[int]]:
-    local_dims = copy(__sg.dims)
+    local_dims = copy(__tg.dims)
     local_dims.update(kwargs)
     return tools.evaluate(template, local_dims)
 
 
 def get_dims(item: Optional[str] = None) -> Union[Dict[str, int], List[Optional[int]]]:
     if item is None:
-        return __sg.dims
+        return __tg.dims
     else:
-        return tools.evaluate(item, __sg.dims)
+        return tools.evaluate(item, __tg.dims)
 
 
 def get_dim(item: str) -> Any:
     try:
-        return __sg.dims[item]
+        return __tg.dims[item]
     except KeyError:
         raise AttributeError(item)
 
 
 def set_dim(key: str, value: Any):
     try:
-        __sg.dims[key] = value
+        __tg.dims[key] = value
     except KeyError:
         raise AttributeError(key)
 
 
 def del_dim(item: str):
     try:
-        del __sg.dims[item]
+        del __tg.dims[item]
     except KeyError:
         raise AttributeError(item)
 
 
 __all__ = (
-    "ShapeGuard",
+    "TensorGuard",
     "__version__",
     "__author__",
     "__author_email__",

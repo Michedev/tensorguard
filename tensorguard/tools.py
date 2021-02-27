@@ -1,5 +1,3 @@
-# Copyright 2018 Google LLC
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,8 +17,8 @@ from copy import copy
 from typing import List, Dict, Union, Optional, Sequence
 from typing_extensions import Protocol
 
-from shapeguard import exception
-from shapeguard import parser
+from tensorguard import exception
+from tensorguard import parser
 
 
 class ShapedTensor(Protocol):

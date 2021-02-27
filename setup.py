@@ -1,13 +1,16 @@
 from setuptools import setup
-with open(__file__ + '/../test-requirements.txt') as f:
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+with open(ROOT / 'test-requirements.txt') as f:
     test_requirements = f.read().split('\n')
-with open(__file__ + '/../requirements.txt') as f:
+with open(ROOT / 'requirements.txt') as f:
     install_requirements = f.read().split('\n')
 
 setup(
     name='tensorguard',
     version='0.1.0',
-    packages=['tests', 'shapeguard'],
+    packages=['tests', 'tensorguard'],
     url='https://github.com/Michedev/tensorguard',
     license='Apache-2.0',
     author='mikedev',
