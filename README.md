@@ -1,6 +1,6 @@
 # Tensor Guard
 
-TensorGuard is a tool to help with handling shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow).
+TensorGuard helps to guard against bad Tensor shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow) using an intuitive symbolic-based syntax
 
 
 
