@@ -2,6 +2,8 @@
 
 TensorGuard helps to guard against bad Tensor shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow) using an intuitive symbolic-based syntax
 
+### Installation
+`pip install tensorguard`
 
 
 ## Basic Usage
