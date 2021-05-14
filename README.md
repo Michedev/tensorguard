@@ -1,5 +1,10 @@
 # Tensor Guard
 
+[![PyPI version fury.io](https://badge.fury.io/py/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
+[![PyPI download month](https://img.shields.io/pypi/dm/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
+[![GitHub followers](https://img.shields.io/github/followers/Michedev.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/Michedev?tab=followers)
+
 TensorGuard helps to guard against bad Tensor shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow) using an intuitive symbolic-based syntax
 
 ### Installation
@@ -43,5 +48,7 @@ The shape template mini-DSL supports many different ways of specifying shapes:
   * ellipsis: `"B, ..., 3"`
   * addition, subtraction, multiplication, division: `"B*N, W/2, H*(C+1)"`
   * dynamic dimensions: `"?, H, W, C"`  *(only matches `[None, H, W, C]`)*
+
+
 
 ### Original Repo link: https://github.com/Qwlouse/shapeguard
