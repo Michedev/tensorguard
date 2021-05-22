@@ -26,8 +26,9 @@ def test_get_dim():
     x = np.zeros([32, 2, 5])
     tg.guard(x, "B, C, W")
     assert tg.get_dim("W") == 5
-    with pytest.raises(AttributeError):
-        tg.get_dim("W* 5")
+    with pytest.raises(KeyError):
+        tg.get_dim("W_FAKE")
+    assert tg.safe_get_dim("W_FAKE") is None
 
 
 def test_set_dim():
@@ -40,6 +41,10 @@ def test_set_dim():
     assert tg.get_dim("W") == 10
     tg.set_dim("WF", 40)
     assert tg.get_dim("WF") == 40
+    assert tg.safe_get_dim("W_FAKE") is None
+    tg.set_dims(WW=32, HH=55)
+    assert tg.get_dim("WW") == 32
+    assert tg.safe_get_dim("HH") == 55
 
 
 def test_del_dim():
@@ -49,6 +54,6 @@ def test_del_dim():
     tg.guard(x, "B, C, W")
     assert tg.get_dim("W") == 5
     tg.del_dim("W")
-    with pytest.raises(AttributeError):
-        tg.get_dim("W")
-
+    with pytest.raises(KeyError):
+        tg.del_dim("W")
+    tg.safe_del_dim("W")

@@ -12,8 +12,8 @@ with open(ROOT / 'requirements.txt') as f:
 with open(ROOT / 'README.md') as f:
     readme = f.read()
 
-class PytestCmd(cmd.Command):
 
+class PytestCmd(cmd.Command):
     user_options = []
     description = 'run pytest on this project'
 
@@ -26,9 +26,10 @@ class PytestCmd(cmd.Command):
     def run(self) -> None:
         os.system(f'cd {ROOT.absolute()} && pytest')
 
+
 setup(
     name='tensorguard',
-    version='0.1.2',
+    version='1.0.0',
     packages=['tensorguard'],
     url='https://github.com/Michedev/tensorguard',
     license='Apache-2.0',
