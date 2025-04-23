@@ -5,7 +5,7 @@ name: Python test
 
 on:
   matrix:
-    python-version: [3.6, 3.7, 3.8, 3.9, "3.10", "3.11", "3.12", "3.13"]
+    python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     branches: [ master ]
   pull_request:
     branches: [ master ]
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v2
