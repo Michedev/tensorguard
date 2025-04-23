@@ -1,4 +1,4 @@
 pytest
-tensorflow
+tensorflow-cpu
 torch
 numpy

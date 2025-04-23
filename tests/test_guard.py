@@ -12,14 +12,18 @@
 
 import pytest
 import torch
-import tensorflow as tf
 import numpy as np
 
 from tensorguard import ShapeError
 from tensorguard import TensorGuard
 
+try:
+    import tensorflow as tf
+except ImportError:
+    tf = None
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_raises_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -27,6 +31,7 @@ def test_guard_raises_tensorflow():
         tg.guard(a, "3, 2, 1")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_infers_dimensions_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -34,6 +39,7 @@ def test_guard_infers_dimensions_tensorflow():
     assert tg.dims == {"A": 1, "B": 2, "C": 3}
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_infers_dimensions_complex_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -41,6 +47,7 @@ def test_guard_infers_dimensions_complex_tensorflow():
     assert tg.dims == {"A": 1, "B": 1, "C": 2}
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_infers_dimensions_operator_priority_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 8])
@@ -48,6 +55,7 @@ def test_guard_infers_dimensions_operator_priority_tensorflow():
     assert tg.dims == {"A": 1, "B": 2, "C": 3}
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_raises_complex_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -55,6 +63,7 @@ def test_guard_raises_complex_tensorflow():
         tg.guard(a, "A, B, B")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_raises_inferred_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -64,6 +73,7 @@ def test_guard_raises_inferred_tensorflow():
         tg.guard(b, "C, B, A")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_ignores_wildcard_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -71,6 +81,7 @@ def test_guard_ignores_wildcard_tensorflow():
     assert tg.dims == {}
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_dynamic_shape_tensorflow():
     tg = TensorGuard()
     with pytest.raises(ShapeError):
@@ -81,6 +92,7 @@ def test_guard_dynamic_shape_tensorflow():
     tg.guard([None, 2, 3], "C?, B, A")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_ellipsis_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3, 4, 5])
@@ -99,6 +111,7 @@ def test_guard_ellipsis_tensorflow():
         tg.guard(a, "..., 1, 2, 3, 4, 5, 6")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_guard_ellipsis_infer_dims_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3, 4, 5])

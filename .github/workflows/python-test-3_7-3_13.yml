@@ -29,7 +29,17 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu; fi
+        if [ -f test-requirements.txt ]; then
+          if [ "${{ matrix.python-version }}" = "3.13" ]; then
+              #  remove tensorflow from test-requirements.txt if it exists
+              #  because it is not compatible with python 3.13
+              sed -i '/tensorflow/d' test-requirements.txt
+              pip install -r test-requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu --no-deps
+            else
+              pip install -r test-requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+            fi
+        fi
+        # if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu; fi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
