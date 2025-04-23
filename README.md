@@ -1,5 +1,5 @@
 # Tensor Guard
-<img src="https://github.com/user-attachments/assets/52f46456-dca2-47d1-9282-8a2cd566bc2b" alt="tensorguard logo" width="300"> 
+<img src="https://github.com/user-attachments/assets/dfddbe05-87e5-48df-8608-e25bf6087044" alt="tensorguard logo" width="300"> 
 
 [![PyPI version fury.io](https://badge.fury.io/py/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
