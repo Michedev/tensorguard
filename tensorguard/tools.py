@@ -20,11 +20,16 @@ from typing_extensions import Protocol
 from tensorguard import exception
 from tensorguard import parser
 
+try:
+    import torch
+except ImportError:
+    pass
+
 
 class ShapedTensor(Protocol):
-    shape: Sequence[int]
+    shape: Union[Sequence[int], 'torch.Size'] 
 
-    def reshape(self, shape: Sequence[int]) -> 'ShapedTensor':
+    def reshape(self, shape: Union[Sequence[int], 'torch.Size']) -> 'ShapedTensor':
         pass
 
 
@@ -73,7 +78,7 @@ def guard(tensor: ShapedTensor, template: str, dims: Dict[str, int]):
     return {k: v for k, v in inferred_dims.items() if not k.startswith("_")}
 
 
-def get_shape(tensor_or_shape: Union[Sequence[int], ShapedTensor]) -> List[int]:
+def get_shape(tensor_or_shape: Union[Sequence[int], 'torch.Size', ShapedTensor]) -> List[int]:
     if isinstance(tensor_or_shape, (list, tuple)):
         return list(tensor_or_shape)
     elif hasattr(tensor_or_shape, 'shape') and hasattr(tensor_or_shape.shape, '__iter__'):
