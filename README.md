@@ -1,9 +1,12 @@
 # Tensor Guard
+<img src="https://github.com/user-attachments/assets/52f46456-dca2-47d1-9282-8a2cd566bc2b" alt="tensorguard logo" width="300"> 
 
 [![PyPI version fury.io](https://badge.fury.io/py/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
 [![PyPI download month](https://img.shields.io/pypi/dm/tensorguard.svg)](https://pypi.python.org/pypi/tensorguard/)
 [![GitHub followers](https://img.shields.io/github/followers/Michedev.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/Michedev?tab=followers)
+
+---
 
 TensorGuard helps to guard against bad Tensor shapes in any tensor based library (e.g. Numpy, Pytorch, Tensorflow) using an intuitive symbolic-based syntax
 
