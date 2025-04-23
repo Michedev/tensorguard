@@ -10,14 +10,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import tensorflow as tf
 import torch
 import numpy as np
 from tensorguard.guard import TensorGuard
+import pytest
 
 # ======== tensorflow =================
 
+try:    
+    import tensorflow as tf
+except ImportError:
+    tf = None
 
+
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_matches_basic_numerical_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -27,6 +33,7 @@ def test_matches_basic_numerical_tensorflow():
     assert not tg.matches(a, "1, 2")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_matches_ignores_spaces_tensorflow():
     tg = TensorGuard()
     a = tf.ones([1, 2, 3])
@@ -35,6 +42,7 @@ def test_matches_ignores_spaces_tensorflow():
     assert tg.matches(a, "1,  2,3 ")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_matches_named_dims_tensorflow():
     tg = TensorGuard(dims={"N": 24, "Z": 16})
     z = tf.ones([24, 16])
@@ -43,6 +51,7 @@ def test_matches_named_dims_tensorflow():
     assert not tg.matches(z, "N, N")
 
 
+@pytest.mark.skipif(tf is None, reason="TensorFlow not installed")
 def test_matches_wildcards_tensorflow():
     tg = TensorGuard()
     z = tf.ones([1, 2, 4, 8])
