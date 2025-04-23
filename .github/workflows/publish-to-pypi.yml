@@ -1,0 +1,39 @@
+# .github/workflows/publish-to-pypi.yml
+
+name: Publish Python Package to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger workflow on pushes to tags like v1.0.0, v0.1.2 etc.
+      - 'v*.*' # Trigger workflow on pushes to tags like v1.0, v0.1 etc.
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: pypi # Define environment for Trusted Publishing (optional but good practice)
+    permissions:
+      # IMPORTANT: Required for trusted publishing using OIDC
+      id-token: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12' # Choose a Python version to build with
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+
+    - name: Build package
+      run: python -m build
+
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      # No 'user' or 'password' needed here when using trusted publishing
