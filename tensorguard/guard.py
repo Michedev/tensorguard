@@ -38,6 +38,14 @@ class TensorGuard:
         local_dims.update(kwargs)
         return tools.evaluate(template, local_dims)
 
+
+    def clear_dims(self):
+        """
+        Remove all the shape tokens
+        """
+        for k in self.dims:
+            del self[k]
+
     def __getitem__(self, item: str) -> List[Optional[int]]:
         return tools.evaluate(item, self.dims)
 

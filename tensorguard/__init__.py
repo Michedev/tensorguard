@@ -168,6 +168,13 @@ def safe_del_dim(key: str):
         del_dim(key)
 
 
+def clear_dims():
+    """
+    Remove all the shape tokens
+    """
+    for k in __tg.dims:
+        del_dim(k)
+
 __all__ = (
     "TensorGuard",
     "__version__",
