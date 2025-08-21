@@ -18,12 +18,12 @@ from tensorguard import tools
 from tensorguard.exception import ShapeError
 from tensorguard.guard import TensorGuard
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 __author__ = "Michele De Vita"
 __author_email__ = "mik3dev@gmail.com"
 
-__url__ = "https://github.com/Michedev/shapeguard"
+__url__ = "https://github.com/Michedev/tensorguard"
 
 from tensorguard.tools import ShapedTensor
 
@@ -192,5 +192,6 @@ __all__ = (
     "has_dim",
     "del_dim",
     "safe_del_dim",
-    "get_dims"
+    "get_dims",
+    "clear_dims",
 )
