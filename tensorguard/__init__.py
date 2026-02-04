@@ -172,7 +172,8 @@ def clear_dims():
     """
     Remove all the shape tokens
     """
-    for k in __tg.dims:
+    keys = list(__tg.dims.keys())
+    for k in keys:
         del_dim(k)
 
 __all__ = (
