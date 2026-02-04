@@ -29,7 +29,7 @@ class PytestCmd(cmd.Command):
 
 setup(
     name='tensorguard',
-    version='1.0.2',
+    version='1.0.3',
     packages=['tensorguard'],
     url='https://github.com/Michedev/tensorguard',
     license='Apache-2.0',
