@@ -18,7 +18,7 @@ from tensorguard import tools
 from tensorguard.exception import ShapeError
 from tensorguard.guard import TensorGuard
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 __author__ = "Michele De Vita"
 __author_email__ = "mik3dev@gmail.com"
